@@ -7,13 +7,15 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 # Enable Apache mod_rewrite for LavaLust clean URLs
 RUN a2enmod rewrite
 
-# Copy app files into container
+# Set working directory
 WORKDIR /var/www/html
+
+# Copy app files into container
 COPY . /var/www/html
 
-# Set permissions for writable directory
-RUN chown -R www-data:www-data /var/www/html/writable \
-    && chmod -R 775 /var/www/html/writable
+# Set runtime (logs/cache) permissions
+RUN chown -R www-data:www-data /var/www/html/runtime \
+    && chmod -R 775 /var/www/html/runtime
 
 # Copy Apache config
 COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
